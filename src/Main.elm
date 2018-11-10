@@ -12,15 +12,20 @@ main =
         }
 
 
+type Person
+    = Male
+    | Female
+
+
 type alias Model =
-    { string : String
-    , int : Int
+    { one : Person
+    , two : Person
     }
 
 
 init =
-    { string = "Hello"
-    , int = 999
+    { one = Male
+    , two = Female
     }
 
 
@@ -29,14 +34,19 @@ update msg model =
     model
 
 
-renderString : String -> Html msg
-renderString string =
-    div [] [ text string ]
+toHtml : Person -> Html msg
+toHtml person =
+    case person of
+        Male ->
+            div [] [ text "a dude" ]
+
+        Female ->
+            div [] [ text "a dudette" ]
 
 
 view : Model -> Html msg
 view model =
     div []
-        [ renderString model.string
-        , renderString (String.fromInt model.int)
+        [ toHtml model.one
+        , toHtml model.two
         ]

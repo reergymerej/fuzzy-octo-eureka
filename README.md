@@ -1,6 +1,7 @@
 # fuzzy-octo-eureka
 
-Let's play with head/tail.
+Let's play with types.
+
 
 
 ## install
