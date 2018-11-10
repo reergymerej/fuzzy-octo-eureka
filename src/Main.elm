@@ -42,7 +42,15 @@ getTail strings =
 
 getLast : List String -> Maybe String
 getLast strings =
-    Just "xxx"
+    case strings of
+        [] ->
+            Nothing
+
+        [ head ] ->
+            Just head
+
+        head :: tail ->
+            getLast tail
 
 
 init =
