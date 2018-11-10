@@ -12,9 +12,17 @@ main =
         }
 
 
+type alias StringThings =
+    List String
+
+
+type alias IntThings =
+    List Int
+
+
 type Person
-    = Male
-    | Female
+    = Male StringThings
+    | Female IntThings
 
 
 type alias Model =
@@ -24,8 +32,8 @@ type alias Model =
 
 
 init =
-    { one = Male
-    , two = Female
+    { one = Male [ "a", "b", "c" ]
+    , two = Female [ 1, 2, 3 ]
     }
 
 
@@ -34,14 +42,40 @@ update msg model =
     model
 
 
+stringToListItem : String -> Html msg
+stringToListItem value =
+    li [] [ text value ]
+
+
+intToListItem : Int -> Html msg
+intToListItem value =
+    li [] [ text (String.fromInt value) ]
+
+
+stringListToHtml : List String -> Html msg
+stringListToHtml list =
+    ul [] (List.map stringToListItem list)
+
+
+intListToHtml : List Int -> Html msg
+intListToHtml list =
+    ul [] (List.map intToListItem list)
+
+
 toHtml : Person -> Html msg
 toHtml person =
     case person of
-        Male ->
-            div [] [ text "a dude" ]
+        Male things ->
+            div []
+                [ div [] [ text "a dude" ]
+                , stringListToHtml things
+                ]
 
-        Female ->
-            div [] [ text "a dudette" ]
+        Female things ->
+            div []
+                [ div [] [ text "a dudette" ]
+                , intListToHtml things
+                ]
 
 
 view : Model -> Html msg
