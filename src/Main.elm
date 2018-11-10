@@ -41,7 +41,7 @@ getLast strings =
 
 init =
     { head = getOne colors
-    , tail = Nothing
+    , tail = getLast colors
     }
 
 
@@ -64,8 +64,24 @@ renderHead head =
     div [] nodes
 
 
+renderListItem : String -> Html msg
+renderListItem string =
+    li [] [ text string ]
+
+
+renderTail : Maybe (List String) -> Html msg
+renderTail list =
+    case list of
+        Nothing ->
+            ul [] []
+
+        Just strings ->
+            ul [] (List.map renderListItem strings)
+
+
 view : Model -> Html msg
 view model =
     div []
         [ renderHead model.head
+        , renderTail model.tail
         ]
