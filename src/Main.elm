@@ -12,17 +12,9 @@ main =
         }
 
 
-type alias StringThings =
-    List String
-
-
-type alias IntThings =
-    List Int
-
-
 type Person
-    = Male StringThings
-    | Female IntThings
+    = Male (List String)
+    | Female (List Int)
 
 
 type alias Model =
@@ -52,14 +44,9 @@ intToListItem value =
     li [] [ text (String.fromInt value) ]
 
 
-stringListToHtml : List String -> Html msg
-stringListToHtml list =
-    ul [] (List.map stringToListItem list)
-
-
-intListToHtml : List Int -> Html msg
-intListToHtml list =
-    ul [] (List.map intToListItem list)
+listToHtml : (a -> Html msg) -> List a -> Html msg
+listToHtml transformer list =
+    ul [] (List.map transformer list)
 
 
 toHtml : Person -> Html msg
@@ -68,13 +55,13 @@ toHtml person =
         Male things ->
             div []
                 [ div [] [ text "a dude" ]
-                , stringListToHtml things
+                , listToHtml stringToListItem things
                 ]
 
         Female things ->
             div []
                 [ div [] [ text "a dudette" ]
-                , intListToHtml things
+                , listToHtml intToListItem things
                 ]
 
 
