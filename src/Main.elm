@@ -15,6 +15,7 @@ main =
 type alias Model =
     { head : Maybe String
     , tail : Maybe (List String)
+    , last : Maybe String
     }
 
 
@@ -34,14 +35,20 @@ getOne strings =
     List.head strings
 
 
-getLast : List String -> Maybe (List String)
-getLast strings =
+getTail : List String -> Maybe (List String)
+getTail strings =
     List.tail strings
+
+
+getLast : List String -> Maybe String
+getLast strings =
+    Just "xxx"
 
 
 init =
     { head = getOne colors
-    , tail = getLast colors
+    , tail = getTail colors
+    , last = getLast colors
     }
 
 
@@ -50,16 +57,16 @@ update msg model =
     model
 
 
-renderHead : Maybe String -> Html msg
-renderHead head =
+renderMaybeString : Maybe String -> Html msg
+renderMaybeString maybe =
     let
         nodes =
-            case head of
+            case maybe of
                 Nothing ->
                     []
 
-                Just x ->
-                    [ text x ]
+                Just string ->
+                    [ text string ]
     in
     div [] nodes
 
@@ -82,6 +89,7 @@ renderTail list =
 view : Model -> Html msg
 view model =
     div []
-        [ renderHead model.head
+        [ renderMaybeString model.head
         , renderTail model.tail
+        , renderMaybeString model.last
         ]
