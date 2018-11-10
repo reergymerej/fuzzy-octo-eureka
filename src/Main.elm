@@ -13,22 +13,15 @@ main =
 
 
 type alias Model =
-    Maybe String
-
-
-colors =
-    [ "red"
-    , "orange"
-    , "yellow"
-    , "green"
-    , "blue"
-    , "indigo"
-    , "violet"
-    ]
+    { string : String
+    , int : Int
+    }
 
 
 init =
-    List.head colors
+    { string = "Hello"
+    , int = 999
+    }
 
 
 update : msg -> Model -> Model
@@ -36,15 +29,14 @@ update msg model =
     model
 
 
+renderString : String -> Html msg
+renderString string =
+    div [] [ text string ]
+
+
 view : Model -> Html msg
 view model =
-    let
-        nodes =
-            case model of
-                Nothing ->
-                    []
-
-                Just x ->
-                    [ text x ]
-    in
-    div [] nodes
+    div []
+        [ renderString model.string
+        , renderString (String.fromInt model.int)
+        ]
