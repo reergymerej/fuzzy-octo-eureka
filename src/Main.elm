@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Html exposing (..)
+import Html.Events exposing (onInput)
 
 
 main =
@@ -20,18 +21,35 @@ type Person
 type alias Model =
     { one : Person
     , two : Person
+    , text : String
     }
 
 
 init =
     { one = Male [ "a", "b", "c" ]
     , two = Female [ 1, 2, 3 ]
+    , text = ""
     }
 
 
-update : msg -> Model -> Model
+
+-- This quietly creates a function Change : String -> Msg.
+
+
+type Msg
+    = Change String
+
+
+getMessageToEmit : String -> Msg
+getMessageToEmit string =
+    Change ("foo" ++ string)
+
+
+update : Msg -> Model -> Model
 update msg model =
-    model
+    case msg of
+        Change string ->
+            { model | text = string }
 
 
 stringToListItem : String -> Html msg
@@ -65,9 +83,11 @@ toHtml person =
                 ]
 
 
-view : Model -> Html msg
+view : Model -> Html Msg
 view model =
     div []
         [ toHtml model.one
         , toHtml model.two
+        , input [ onInput getMessageToEmit ] []
+        , div [] [ text model.text ]
         ]
